@@ -5,11 +5,11 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.OrientationHelper
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
-import com.cn.lk.androidexp.service.SimpleServiceClientActivity
+import com.cn.lk.androidexp.ipc.service.binder.BinderServiceClientActivity
 
 class MainActivity : AppCompatActivity() {
     private val list = listOf<ActivityItem>(ActivityItem("Service",
-            SimpleServiceClientActivity::class.java))
+            BinderServiceClientActivity::class.java))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

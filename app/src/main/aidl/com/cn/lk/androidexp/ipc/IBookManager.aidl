@@ -1,10 +1,10 @@
 // IBookManager.aidl
 // 第二类AIDL文件
 // 作用是定义方法接口
-package com.cn.lk.androidexp.ipc.binder;
+package com.cn.lk.androidexp.ipc;
 
 // 导入所需要使用的非默认支持数据类型的包
-import com.cn.lk.androidexp.ipc.binder.Book;
+import com.cn.lk.androidexp.ipc.Book;
 
 interface IBookManager {
 

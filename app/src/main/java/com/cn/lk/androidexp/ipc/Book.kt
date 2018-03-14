@@ -1,4 +1,4 @@
-package com.cn.lk.androidexp.ipc.binder
+package com.cn.lk.androidexp.ipc
 
 import android.os.Parcel
 import android.os.Parcelable

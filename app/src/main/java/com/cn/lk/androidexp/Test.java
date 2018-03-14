@@ -15,5 +15,8 @@ public class Test {
     void  sss() {
         KKK a = new KKK();
         a.fun();
+        if (a != null) {
+           return;
+        }
     }
 }
