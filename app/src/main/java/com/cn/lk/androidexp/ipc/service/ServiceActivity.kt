@@ -1,15 +1,18 @@
-package com.cn.lk.androidexp
+package com.cn.lk.androidexp.ipc.service
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.OrientationHelper
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
-import com.cn.lk.androidexp.ipc.service.ServiceActivity
+import com.cn.lk.androidexp.ActivityItem
+import com.cn.lk.androidexp.ItemAdapter
+import com.cn.lk.androidexp.R
+import com.cn.lk.androidexp.ipc.service.binder.BinderServiceClientActivity
 
-class MainActivity : AppCompatActivity() {
-    private val list = listOf<ActivityItem>(ActivityItem("Service",
-            ServiceActivity::class.java))
+class ServiceActivity : AppCompatActivity() {
+    private val list = listOf<ActivityItem>(ActivityItem("Binder扩展式服务",
+            BinderServiceClientActivity::class.java))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
