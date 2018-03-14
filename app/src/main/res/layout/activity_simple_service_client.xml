@@ -9,6 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="16dp"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
         android:background="#f8f8f8"
         android:layout_weight="1">
 
