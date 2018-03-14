@@ -18,7 +18,12 @@
         </activity>
         <activity android:name=".service.SimpleServiceClientActivity"/>
 
-        <service android:name=".service.BookService"/>
+        <service android:name=".service.CountService"/>
+        <!--android:enabled="true" 是否可以被系统实例化-->
+        <!--android:exported 是否能被其他应用隐式调用-->
+        <!--android:process 运行在的进程-->
+        <!--android:isolatedProcess 服务会在一个特殊的进程下运行，这个进程与系统其他进程分开且没有自己的权限。与其通信的唯一途径是通过服务的API(bind and start)-->
+
     </application>
 
 </manifest>
