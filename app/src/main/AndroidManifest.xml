@@ -19,8 +19,10 @@
 
         <activity android:name=".ipc.service.binder.BinderServiceClientActivity"/>
         <activity android:name=".ipc.service.ServiceActivity"/>
+        <activity android:name=".ipc.service.messenger.MessengerServiceClientActivity"/>
 
-        <service android:name=".ipc.service.binder.CountService"/>
+        <service android:name=".ipc.service.binder.BinderCountService"/>
+        <service android:name=".ipc.service.messenger.MessengerCountService"/>
         <!--android:enabled="true" 是否可以被系统实例化-->
         <!--android:exported 是否能被其他应用隐式调用-->
         <!--android:process 运行在的进程-->

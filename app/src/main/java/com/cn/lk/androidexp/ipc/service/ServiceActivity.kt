@@ -9,10 +9,14 @@ import com.cn.lk.androidexp.ActivityItem
 import com.cn.lk.androidexp.ItemAdapter
 import com.cn.lk.androidexp.R
 import com.cn.lk.androidexp.ipc.service.binder.BinderServiceClientActivity
+import com.cn.lk.androidexp.ipc.service.messenger.MessengerServiceClientActivity
 
 class ServiceActivity : AppCompatActivity() {
-    private val list = listOf<ActivityItem>(ActivityItem("Binder扩展式服务",
-            BinderServiceClientActivity::class.java))
+    private val list = listOf<ActivityItem>(
+            // http://blog.csdn.net/javazejian/article/details/52709857
+            ActivityItem("Binder扩展式服务",  BinderServiceClientActivity::class.java),
+            ActivityItem("Messenger式服务",  MessengerServiceClientActivity::class.java)
+            )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

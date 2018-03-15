@@ -1,4 +1,4 @@
-package com.cn.lk.androidexp.ipc.service.binder
+package com.cn.lk.androidexp.ipc.service.messenger
 
 import android.content.ComponentName
 import android.content.Context
@@ -6,21 +6,24 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
+import android.os.Messenger
 import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.cn.lk.androidexp.R
+import com.cn.lk.androidexp.ipc.service.binder.BinderCountService
 import kotlinx.android.synthetic.main.activity_simple_service_client.*
 
 
-class BinderServiceClientActivity : FragmentActivity(), View.OnClickListener {
+class MessengerServiceClientActivity : FragmentActivity(), View.OnClickListener {
 
     companion object {
-        var TAG = "BinderCountService-Client"
+        var TAG = "MessengerCountService-Client"  // 23个字符以上需要用var
     }
 
-    var service: BinderCountService? = null
+    var messenger: Messenger? = null
+
 
     private val connection: ServiceConnection? = object : ServiceConnection {
         /**
@@ -29,31 +32,19 @@ class BinderServiceClientActivity : FragmentActivity(), View.OnClickListener {
          */
         override fun onServiceDisconnected(name: ComponentName?) {
             Log.d(TAG, "onServiceDisconnected")
-            service = null
+            messenger = null
         }
 
         override fun onServiceConnected(name: ComponentName?, ser: IBinder?) {
             Log.d(TAG, "onServiceConnected")
-            var bind = ser!! as BinderCountService.CountBinder?
-            service = bind!!.service
-            service!!.listener = object : BinderCountService.IListener {
-                override fun onTick(curCount: Int) {
-                    // 这种不确定线程的需放到异步线程
-                    runOnUiThread({
-                        tv.text = """${tv.text.toString()}
---${curCount}"""
-                    })
-                }
-
-            }
+            messenger = Messenger(ser)
         }
 
         override fun onBindingDied(name: ComponentName?) {
             Log.d(TAG, "onBindingDied")
-            service = null
+            messenger = null
         }
     }
-
 
     override fun onClick(v: View?) {
         var intent = Intent(this, BinderCountService::class.java)
@@ -67,17 +58,19 @@ class BinderServiceClientActivity : FragmentActivity(), View.OnClickListener {
                 bindService(intent, connection, Context.BIND_AUTO_CREATE)
             }
             btn_unbind -> {
-                if (service != null) {
-                    service = null
+                if (messenger != null) {
+                    messenger = null
                     unbindService(connection)
                 }
             }
 
             btn_get_count -> {
-                if (service != null) {
+                if (messenger != null) {
+//                    messenger!!.send(Mess)
+
                     // 字符串模板
-                    tv.text = """${tv.text.toString()}
-${service!!.count.get()}"""
+//                    tv.text = """${tv.text.toString()}
+//${service!!.count}"""
                 }
             }
             else -> Toast.makeText(this, "ERROR", Toast.LENGTH_SHORT).show()

@@ -5,18 +5,19 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import java.util.concurrent.atomic.AtomicInteger
 
 
-class CountService : Service() {
+class BinderCountService : Service() {
     companion object {
-        var TAG = "BookService"
+        var TAG = "BinderCountService"
     }
 
     /**
      * 公共方法
      * @return
      */
-    public var count: Int = 0
+    public var count = AtomicInteger(0)
         private set
     private var quit: Boolean = false
     private var binder:CountBinder? = CountBinder()
@@ -28,8 +29,8 @@ class CountService : Service() {
         // 声明一个方法，getService。（提供给客户端调用）
         internal// 返回当前对象LocalService,这样我们就可在客户端端调用Service的公共方法了
         // 特别注意，此处不要直接返回
-        val service: CountService
-            get() = this@CountService
+        val service: BinderCountService
+            get() = this@BinderCountService
     }
 
     /**
@@ -52,7 +53,7 @@ class CountService : Service() {
                     e.printStackTrace()
                 }
 
-                count++
+                listener!!.onTick(count.addAndGet(1))
             }
         }).start()
     }
@@ -72,4 +73,11 @@ class CountService : Service() {
         this.quit = true
         this.binder = null  // 对象必须释放掉，保证及时gc掉
     }
+
+    // 异步回调
+    interface IListener {
+        fun onTick(curCount:Int)
+    }
+
+    var listener:IListener? = null
 }
