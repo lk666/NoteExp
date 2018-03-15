@@ -9,7 +9,7 @@ import android.util.Log
 
 class CountService : Service() {
     companion object {
-        var TAG = "BookService-Client"
+        var TAG = "BookService"
     }
 
     /**
@@ -19,8 +19,7 @@ class CountService : Service() {
     public var count: Int = 0
         private set
     private var quit: Boolean = false
-    private var thread: Thread? = null
-    private val binder = CountBinder()
+    private var binder:CountBinder? = CountBinder()
 
     /**
      * 创建Binder对象，返回给客户端即Activity使用，提供数据交换的接口
@@ -37,13 +36,14 @@ class CountService : Service() {
      * 把Binder类返回给客户端
      */
     override fun onBind(intent: Intent): IBinder? {
+        Log.i(TAG, "onBind")
         return binder
     }
 
     override fun onCreate() {
         super.onCreate()
         Log.i(TAG, "onCreated")
-        thread = Thread(Runnable {
+        Thread(Runnable {
             // 每间隔一秒count加1 ，直到quit为true。
             while (!quit) {
                 try {
@@ -54,8 +54,7 @@ class CountService : Service() {
 
                 count++
             }
-        })
-        thread!!.start()
+        }).start()
     }
 
     /**
@@ -68,8 +67,9 @@ class CountService : Service() {
     }
 
     override fun onDestroy() {
+        super.onDestroy()
         Log.i(TAG, "odDestroyed")
         this.quit = true
-        super.onDestroy()
+        this.binder = null  // 对象必须释放掉，保证及时gc掉
     }
 }
