@@ -79,5 +79,5 @@ class BinderCountService : Service() {
         fun onTick(curCount:Int)
     }
 
-    var listener:IListener? = null
+    var listener:IListener? = null // 可能内存泄露，此处为强引用
 }

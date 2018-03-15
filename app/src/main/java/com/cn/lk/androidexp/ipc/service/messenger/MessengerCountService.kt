@@ -2,11 +2,10 @@ package com.cn.lk.androidexp.ipc.service.messenger
 
 import android.app.Service
 import android.content.Intent
-import android.os.Handler
-import android.os.IBinder
-import android.os.Message
-import android.os.Messenger
+import android.os.*
 import android.util.Log
+import java.lang.Exception
+import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.thread
 
@@ -21,22 +20,43 @@ class MessengerCountService : Service() {
      * 公共方法
      * @return
      */
-    public var count = AtomicInteger(0)
+    var count = AtomicInteger(0)
         private set
     private var quit: Boolean = false
-    private var messenger: Messenger? = Messenger(CountHandle())
+    private var messenger: Messenger? = Messenger(CountHandle(this))
 
     /**
      * 用于接收从客户端传递过来的数据
      */
-    inner class CountHandle : Handler() {
+    inner class CountHandle(service: MessengerCountService) : Handler() {
+        /**
+         * 使用弱引用，以不会导致在client线程内存泄漏
+         */
+        private var service: WeakReference<MessengerCountService>? = null
+
         override fun handleMessage(msg: Message?) {
 
             when (msg!!.what) {
-                MSG_GET_COUNT -> Log.i(TAG, "Receive MSG_GET_COUNT")
+                MSG_GET_COUNT -> {
+                    Log.i(TAG, "Receive MSG_GET_COUNT--" + application)
+
+                    var receiver = msg.replyTo
+                    var msg = Message.obtain(null, MessengerServiceClientActivity.MSG_REPLY_COUNT)
+                    var data = Bundle()
+                    data.putInt("count", service!!.get()!!.count.get())
+                    msg.data = data
+                    try {
+                        receiver.send(msg)
+                    } catch (e :Exception) {
+                        Log.e(TAG, "send reply msg error--" + e.message)
+                    }
+                }
                 else -> super.handleMessage(msg)
             }
-//        this@MessengerCountService
+        }
+
+        init {
+            this.service = WeakReference(service)
         }
     }
 

@@ -11,7 +11,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.cn.lk.androidexp.R
-import kotlinx.android.synthetic.main.activity_simple_service_client.*
+import kotlinx.android.synthetic.main.activity_bind_service_client.*
 
 
 class BinderServiceClientActivity : FragmentActivity(), View.OnClickListener {
@@ -86,9 +86,9 @@ ${service!!.count.get()}"""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_simple_service_client)
+        setContentView(R.layout.activity_bind_service_client)
 
-        tv.text = "SimpleServiceClientActivity onCreate"
+        tv.text = "BinderServiceClientActivity onCreate"
         btn_start.setOnClickListener(this)
         btn_stop.setOnClickListener(this)
         btn_bind.setOnClickListener(this)
