@@ -9,7 +9,7 @@ import java.lang.ref.WeakReference
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.thread
 
-
+// !!必须搭配try
 class MessengerCountService : Service() {
     companion object {
         val TAG = "MessengerCountService"
