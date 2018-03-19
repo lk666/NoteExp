@@ -26,6 +26,21 @@
         <activity android:name=".ipc.service.ServiceActivity"/>
         <activity android:name=".ipc.service.messenger.MessengerServiceClientActivity"/>
         <activity android:name=".ipc.service.foreground.ForegroundServiceClientActivity"/>
+        <activity android:name=".notification.NotificationActivity"/>
+
+
+        <activity
+            android:name=".notification.SimpleNotificationActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity"
+            tools:targetApi="jelly_bean">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
+
+
+
 
         <service android:name=".ipc.service.binder.BinderCountService"/>
         <service

@@ -87,11 +87,4 @@ class ForegroundCountService : Service() {
         isOn.set(false)
         binder = null
     }
-
-//    private fun createNotify() :Notification {
-//        var builder = NotificationCompat.Builder(this)
-//        builder.
-//    }
-
-
 }
