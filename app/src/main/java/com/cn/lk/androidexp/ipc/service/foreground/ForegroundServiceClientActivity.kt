@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_foreground.*
 import java.lang.ref.WeakReference
 
 
-class ForegroundServiceClientActivity : FragmentActivity(), View.OnClickListener {
+class ForegroundServiceClientActivity : FragmentActivity(), View.OnClickListener, ForegroundCountService.IListener {
 
     companion object {
         var TAG = "BinderCountService-Client"
@@ -30,20 +30,24 @@ class ForegroundServiceClientActivity : FragmentActivity(), View.OnClickListener
         btn_pause.setOnClickListener(this)
     }
 
+    var isFront = false
+    override fun onResume() {
+        super.onResume()
+        isFront = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isFront = false
+    }
+
     var service: WeakReference<ForegroundCountService>? = null
     var isBound = false
     var conn: ServiceConnection? = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, ser: IBinder?) {
             service = (ser as ForegroundCountService.ProgressBinder?)?.service
             if (service?.get() != null) {
-                service?.get()?.listener = object : ForegroundCountService.IListener {
-                    var aty: WeakReference<ForegroundServiceClientActivity>? = WeakReference(this@ForegroundServiceClientActivity)
-                    override fun onTick(curProgress: Int) {
-                        aty?.get()?.tv?.post({
-                            aty?.get()?.tv?.text = curProgress.toString()
-                        })
-                    }
-                }
+                service?.get()?.listener = WeakReference(this@ForegroundServiceClientActivity)
                 service?.get()?.resume()
                 isBound = true
             }
@@ -57,6 +61,14 @@ class ForegroundServiceClientActivity : FragmentActivity(), View.OnClickListener
         override fun onBindingDied(name: ComponentName?) {
             isBound = false
             service = null
+        }
+    }
+
+    override fun onTick(curProgress: Int) {
+        if (isFront) {
+            tv?.post({
+                tv?.text = curProgress.toString()
+            })
         }
     }
 

@@ -47,7 +47,7 @@ class ForegroundCountService : Service() {
                 while (isOn.get()) {
                     try {
                         Thread.sleep(1000)
-                        listener?.onTick(count.addAndGet(1))
+                        listener?.get()?.onTick(count.addAndGet(1))
                     } catch (e: InterruptedException) {
                         e.printStackTrace()
                     }
@@ -70,7 +70,7 @@ class ForegroundCountService : Service() {
     /**
      * 回调
      */
-    public var listener: IListener? = null
+    public var listener: WeakReference<IListener>? = null
 
     inner class ProgressBinder(service: ForegroundCountService) : Binder() {
         internal val service = WeakReference(this@ForegroundCountService)
@@ -87,4 +87,11 @@ class ForegroundCountService : Service() {
         isOn.set(false)
         binder = null
     }
+
+//    private fun createNotify() :Notification {
+//        var builder = NotificationCompat.Builder(this)
+//        builder.
+//    }
+
+
 }
