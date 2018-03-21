@@ -3,7 +3,6 @@ package com.cn.lk.androidexp.notification
 import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
@@ -97,7 +96,6 @@ class SimpleNotificationActivity : FragmentActivity(), View.OnClickListener {
                 // 设置震动方式，延迟零秒，震动一秒，延迟一秒、震动一秒
                 .setVibrate(longArrayOf(0, 1000, 1000, 1000))
 
-
                 //---------------------- 没试出效果
                 // 显示指定文本
                 .setContentInfo("Info")
@@ -107,25 +105,56 @@ class SimpleNotificationActivity : FragmentActivity(), View.OnClickListener {
                 // 通知在状态栏显示时的文本
                 .setTicker("在状态栏上显示的文本")
 
-
         // 设置点击通知后的动作
-        val intent = Intent(this, SimpleNotificationActivity::class.java)
-        var ptIntent = PendingIntent.getActivity(this, 0, intent, 0)
+        val lastIntent = Intent(this, SimpleNotificationActivity::class.java)
+        lastIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        var ptIntent: PendingIntent?
 
-        // 设置回退栈
-       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-           val stackBuilder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-               TaskStackBuilder.create(this)
-           } else {
-              null
-           }
-           stackBuilder?.addParentStack(NotificationActivity::class.java)
-           stackBuilder?.addNextIntent(intent)
-           ptIntent =  stackBuilder?.getPendingIntent(0, PendingIntent.FLAG_NO_CREATE)
-        }
+        ////////////////////////////////// 设置回退栈
+        // 使用manifest的parentActivityName，可以
+//        <activity
+//        android:name="....SimpleNotificationActivity"
+//        android:parentActivityName=".MainActivity">
+//        <meta-data
+//        android:name="android.support.PARENT_ACTIVITY"
+//        android:value="....MainActivity" />
+//        </activity>
 
+
+
+//       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//           // 一个个设置回退的方法
+////           val stackBuilder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+////               TaskStackBuilder.create(this)
+////           } else {
+////              null
+////           }
+//           // 设置第一个回退栈 添加单个回退栈
+////           stackBuilder?.addNextIntentWithParentStack(lastIntent)
+////           ...
+////           ptIntent = stackBuilder?.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+//
+//           // 添加多个回退栈
+//           val nextIntent = Intent(this, NotificationActivity::class.java)
+//           nextIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+//           val topIntent = Intent(this, MainActivity::class.java)
+//           topIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//           topIntent.action = Intent.ACTION_MAIN
+//           topIntent.addCategory(Intent.CATEGORY_DEFAULT)
+//
+//           val intents = arrayOf(topIntent, nextIntent, lastIntent)
+//
+//           ptIntent = PendingIntent.getActivities(this, 0, intents,
+//                   PendingIntent.FLAG_UPDATE_CURRENT)
+//       } else {
+//
+//           ptIntent = PendingIntent.getActivity(this, 0, lastIntent, 0)
+//       }
+
+        ptIntent = PendingIntent.getActivity(this, 0, lastIntent, 0)
         builder.setContentIntent(ptIntent)
 
+        ///////////////////////////////// 样式
         when ((type - 1) % 4) {
             0 -> {
                 ///////////// 长文本样式
