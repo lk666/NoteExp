@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:layout_marginBottom="0dp"
-        android:text="clear last one"
+        android:text="跳到下一个activity"
         android:textAllCaps="false"/>
 
     <Button

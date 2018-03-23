@@ -25,13 +25,11 @@
         <activity android:name=".ipc.service.binder.BinderServiceClientActivity"/>
         <activity android:name=".ipc.service.ServiceActivity"/>
         <activity android:name=".ipc.service.messenger.MessengerServiceClientActivity"/>
-        <activity android:name=".ipc.service.foreground.ForegroundServiceClientActivity"/>
-
-
         <activity
-            android:name=".notification.NotificationActivity">
-        </activity>
+            android:name=".ipc.service.foreground.ForegroundServiceClientActivity"
+            android:launchMode="singleTask"/>
 
+        <activity android:name=".notification.NotificationActivity"/>
 
         <activity
             android:name=".notification.SimpleNotificationActivity">
