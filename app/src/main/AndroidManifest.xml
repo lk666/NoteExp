@@ -14,8 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         tools:replace="android:allowBackup"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-            android:launchMode="singleTask">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -30,22 +29,17 @@
 
 
         <activity
-            android:name=".notification.NotificationActivity"
-            android:parentActivityName=".MainActivity"
-            tools:targetApi="jelly_bean">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+            android:name=".notification.NotificationActivity">
         </activity>
 
 
         <activity
-            android:name=".notification.SimpleNotificationActivity"
-            android:parentActivityName=".notification.NotificationActivity"
-            tools:targetApi="jelly_bean">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".notification.NotificationActivity"/>
+            android:name=".notification.SimpleNotificationActivity">
+            <!--android:parentActivityName=".notification.NotificationActivity"-->
+            <!--tools:targetApi="jelly_bean">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.PARENT_ACTIVITY"-->
+                <!--android:value=".notification.NotificationActivity"/>-->
         </activity>
 
         <service android:name=".ipc.service.binder.BinderCountService"/>

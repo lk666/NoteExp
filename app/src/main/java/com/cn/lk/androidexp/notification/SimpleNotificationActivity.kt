@@ -12,8 +12,11 @@ import android.support.v4.app.FragmentActivity
 import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
 import android.view.View
+import android.widget.RemoteViews
 import android.widget.Toast
+import com.cn.lk.androidexp.MainActivity
 import com.cn.lk.androidexp.R
+import com.cn.lk.androidexp.ipc.service.binder.BinderServiceClientActivity
 import kotlinx.android.synthetic.main.activity_simple_notify.*
 
 // https://www.jianshu.com/p/ec67ba83934a
@@ -34,6 +37,7 @@ class SimpleNotificationActivity : FragmentActivity(), View.OnClickListener {
         btn_clear_last.setOnClickListener(this)
         btn_clear.setOnClickListener(this)
         btn_refresh.setOnClickListener(this)
+        btn_custom.setOnClickListener(this)
     }
 
     var notify: Notification? = null
@@ -41,6 +45,11 @@ class SimpleNotificationActivity : FragmentActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         when (v) {
+        // 自定义通知
+            btn_custom -> {
+                notify = createCustomNotify()
+                nm.notify(curId++, notify)
+            }
         // 通知
             btn_notify -> {
                 notify = createNotify(curId)
@@ -53,9 +62,12 @@ class SimpleNotificationActivity : FragmentActivity(), View.OnClickListener {
             }
         // 清除上一个
             btn_clear_last -> {
-                if (curId > 1) {
-                    nm.cancel(--curId)
-                }
+                startActivity(Intent(this, BinderServiceClientActivity::class.java))
+
+
+//                if (curId > 1) {
+//                    nm.cancel(--curId)
+//                }
             }
         // 更新上一个内容
             btn_refresh -> {
@@ -67,6 +79,77 @@ class SimpleNotificationActivity : FragmentActivity(), View.OnClickListener {
     }
 
     var curId = 1
+
+    /**
+     * 自定义通知布局的可用高度取决于通知视图。普通视图布局限制为 64 dp，扩展视图布局限制为 256 dp
+     * 使用RemoteViews
+     */
+    private fun createCustomNotify(): Notification {
+        val builder = NotificationCompat.Builder(this)
+        val bm = (ContextCompat.getDrawable(this, R.mipmap.ic_launcher) as BitmapDrawable).bitmap
+
+        // 自定义的话，这些设置中，关于界面的设置全都没卵用
+        builder
+                // 小图标
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                // 大图标
+                .setLargeIcon(bm)
+                // 标题
+                .setContentTitle("标题")
+                // 正文
+                .setContentText("正文, id = $curId")
+                // 摘要
+                .setSubText("摘要")
+                // 点击后是否自动取消（false：点击不取消）
+                .setAutoCancel(false)
+                // 设置优先级
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                // 自定义消息时间，以毫秒为单位，当前设置为比系统时间少一小时
+                .setWhen(System.currentTimeMillis() - 3600000)
+                // 设置为一个正在进行的通知，此时用户无法侧滑清除通知（true：不能侧滑删除）
+                .setOngoing(true)
+                // 设置消息的提醒方式，震动提醒：DEFAULT_VIBRATE     声音提醒：NotificationCompat.DEFAULT_SOUND
+                // 三色灯提醒NotificationCompat.DEFAULT_LIGHTS     以上三种方式一起：DEFAULT_ALL
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                // 设置震动方式，延迟零秒，震动一秒，延迟一秒、震动一秒
+                .setVibrate(longArrayOf(0, 1000, 1000, 1000))
+
+                //---------------------- 没试出效果
+                // 显示指定文本
+                .setContentInfo("Info")
+                // 与setContentInfo类似，但如果设置了setContentInfo则无效果
+                // 用于当显示了多个相同ID的Notification时，显示消息总数
+                .setNumber(2)
+                // 通知在状态栏显示时的文本
+                .setTicker("在状态栏上显示的文本")
+
+        // 设置点击通知后的动作
+        val lastIntent = Intent(this, SimpleNotificationActivity::class.java)
+        /////////////////////////// 添加多个回退栈
+        val nextIntent = Intent(this, NotificationActivity::class.java)
+        val topIntent = Intent(this, MainActivity::class.java)
+        topIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK.or(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        topIntent.action = Intent.ACTION_MAIN
+        topIntent.addCategory(Intent.CATEGORY_DEFAULT)
+        val intents = arrayOf(topIntent, nextIntent, lastIntent)
+        val ptIntent = PendingIntent.getActivities(this, 0, intents,
+                PendingIntent.FLAG_UPDATE_CURRENT)
+        builder.setContentIntent(ptIntent)
+
+        ///////////////////// 自定义布局
+        var remoteView = RemoteViews(packageName, R.layout.view_custom_notify)
+        remoteView.setTextViewText(R.id.btn, "修改后的按钮文本，点击清除")
+        val btnIntent = Intent(this, NotificationActivity::class.java)
+        val btnTopIntent = Intent(this, MainActivity::class.java)
+        btnTopIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK.or(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        btnTopIntent.action = Intent.ACTION_MAIN
+        btnTopIntent.addCategory(Intent.CATEGORY_DEFAULT)
+        val pIntent = PendingIntent.getActivities(this, 0, arrayOf(btnTopIntent, btnIntent), 0)
+        remoteView.setOnClickPendingIntent(R.id.btn, pIntent)
+        builder.setContent(remoteView)
+
+        return builder.build()
+    }
 
     private fun createNotify(type: Int): Notification {
         val builder = NotificationCompat.Builder(this)
@@ -107,11 +190,10 @@ class SimpleNotificationActivity : FragmentActivity(), View.OnClickListener {
 
         // 设置点击通知后的动作
         val lastIntent = Intent(this, SimpleNotificationActivity::class.java)
-        lastIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        var ptIntent: PendingIntent?
+//        val ptIntent = PendingIntent.getActivity(this, 0, lastIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         ////////////////////////////////// 设置回退栈
-        // 使用manifest的parentActivityName，可以
+        // 使用manifest的parentActivityName，设置回退栈，不起效
 //        <activity
 //        android:name="....SimpleNotificationActivity"
 //        android:parentActivityName=".MainActivity">
@@ -121,37 +203,29 @@ class SimpleNotificationActivity : FragmentActivity(), View.OnClickListener {
 //        </activity>
 
 
+        ////////////////////// 一个个设置回退的方法
+//           val stackBuilder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//               TaskStackBuilder.create(this)
+//           } else {
+//              null
+//           }
+        // 设置第一个回退栈 添加单个回退栈
+//           stackBuilder?.addNextIntentWithParentStack(lastIntent)
+//           ...
+//           ptIntent = stackBuilder?.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
 
-//       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//           // 一个个设置回退的方法
-////           val stackBuilder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-////               TaskStackBuilder.create(this)
-////           } else {
-////              null
-////           }
-//           // 设置第一个回退栈 添加单个回退栈
-////           stackBuilder?.addNextIntentWithParentStack(lastIntent)
-////           ...
-////           ptIntent = stackBuilder?.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
-//
-//           // 添加多个回退栈
-//           val nextIntent = Intent(this, NotificationActivity::class.java)
-//           nextIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-//           val topIntent = Intent(this, MainActivity::class.java)
-//           topIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//           topIntent.action = Intent.ACTION_MAIN
-//           topIntent.addCategory(Intent.CATEGORY_DEFAULT)
-//
-//           val intents = arrayOf(topIntent, nextIntent, lastIntent)
-//
-//           ptIntent = PendingIntent.getActivities(this, 0, intents,
-//                   PendingIntent.FLAG_UPDATE_CURRENT)
-//       } else {
-//
-//           ptIntent = PendingIntent.getActivity(this, 0, lastIntent, 0)
-//       }
+        /////////////////////////// 添加多个回退栈
+        val nextIntent = Intent(this, NotificationActivity::class.java)
+        val topIntent = Intent(this, MainActivity::class.java)
+        topIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK.or(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        topIntent.action = Intent.ACTION_MAIN
+        topIntent.addCategory(Intent.CATEGORY_DEFAULT)
 
-        ptIntent = PendingIntent.getActivity(this, 0, lastIntent, 0)
+        val intents = arrayOf(topIntent, nextIntent, lastIntent)
+
+        val ptIntent = PendingIntent.getActivities(this, 0, intents,
+                PendingIntent.FLAG_UPDATE_CURRENT)
+
         builder.setContentIntent(ptIntent)
 
         ///////////////////////////////// 样式

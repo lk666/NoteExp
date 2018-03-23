@@ -45,4 +45,15 @@
         android:layout_marginBottom="0dp"
         android:text="更新最后一条的内容"
         android:textAllCaps="false"/>
+
+
+    <Button
+        android:id="@+id/btn_custom"
+        style="@style/Btn1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="0dp"
+        android:text="自定义通知"
+        android:textAllCaps="false"/>
 </LinearLayout>
