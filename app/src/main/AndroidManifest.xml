@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.cn.lk.androidexp">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- 闪光灯权限 -->
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <!-- 振动器权限 -->
@@ -39,6 +41,8 @@
                 <!--android:name="android.support.PARENT_ACTIVITY"-->
                 <!--android:value=".notification.NotificationActivity"/>-->
         </activity>
+        <activity android:name=".kotlin.SimpleKotlinActivity"/>
+        <activity android:name=".kotlin.KotlinActivity"/>
 
         <service android:name=".ipc.service.binder.BinderCountService"/>
         <service

@@ -46,14 +46,14 @@ class BinderCountService : Service() {
         Log.i(TAG, "onCreated")
         Thread(Runnable {
             // 每间隔一秒count加1 ，直到quit为true。
-            while (!quit) {
+            while (true) {
                 try {
                     Thread.sleep(1000)
                 } catch (e: InterruptedException) {
                     e.printStackTrace()
                 }
 
-                listener!!.onTick(count.addAndGet(1))
+                listener?.onTick(count.addAndGet(1))
             }
         }).start()
     }
