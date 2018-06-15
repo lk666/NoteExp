@@ -8,6 +8,10 @@
     <uses-permission android:name="android.permission.FLASHLIGHT"/>
     <!-- 振动器权限 -->
     <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:name=".AppContext"
         android:allowBackup="false"
@@ -43,6 +47,7 @@
         </activity>
         <activity android:name=".kotlin.SimpleKotlinActivity"/>
         <activity android:name=".kotlin.KotlinActivity"/>
+        <activity android:name=".annotation.SupportAnnotationActivity"/>
 
         <service android:name=".ipc.service.binder.BinderCountService"/>
         <service

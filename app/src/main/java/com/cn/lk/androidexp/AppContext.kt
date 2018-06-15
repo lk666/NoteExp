@@ -5,6 +5,11 @@ import com.squareup.leakcanary.LeakCanary
 
 
 class AppContext : Application() {
+    companion object {
+        private var instance: Application? = null
+        fun instance() = instance!!
+    }
+
     override fun onCreate() {
         super.onCreate()
         if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -14,5 +19,6 @@ class AppContext : Application() {
         }
         LeakCanary.install(this)
         // Normal app init code...
+        instance = this
     }
 }
