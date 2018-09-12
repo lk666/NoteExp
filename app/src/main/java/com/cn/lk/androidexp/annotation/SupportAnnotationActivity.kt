@@ -73,7 +73,7 @@ class SupportAnnotationActivity : FragmentActivity(), View.OnClickListener {
     /**
      *  使用 @IntDef 和 @StringDef 注解，以便能够创建整型和字符串集的枚举注解来验证其他类型的代码引用
      *
-     *  实测都不会警告
+     *  实测都不会警告 
      */
     private fun typeFun() {
         setNavigationMode("")

@@ -55,4 +55,6 @@ dependencies {
 
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.android.support.constraint:constraint-layout:1.1.1'
+    compile 'com.birbit:android-priority-jobqueue:2.0.1'
+    implementation project(':lib_log')
 }

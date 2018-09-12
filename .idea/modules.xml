@@ -5,6 +5,7 @@
       <module fileurl="file://C:\Users\lk\Desktop\NoteExp\AndroidExp.iml" filepath="C:\Users\lk\Desktop\NoteExp\AndroidExp.iml" />
       <module fileurl="file://$PROJECT_DIR$/NoteExp.iml" filepath="$PROJECT_DIR$/NoteExp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_log/lib_log.iml" filepath="$PROJECT_DIR$/lib_log/lib_log.iml" />
     </modules>
   </component>
 </project>
