@@ -24,7 +24,6 @@ class SimpleKotlinActivity : FragmentActivity() {
         btn_unbind.visibility = View.GONE
         btn_get_count.visibility = View.GONE
 
-
         A(btn_bind).f()
 
         // copy

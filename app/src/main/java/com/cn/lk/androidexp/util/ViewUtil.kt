@@ -10,4 +10,7 @@ object ViewUtil {
     fun toast(txt: String?) {
         Toast.makeText(AppContext.instance(), txt, Toast.LENGTH_SHORT).show()
     }
+    fun toastLong(txt: String?) {
+        Toast.makeText(AppContext.instance(), txt, Toast.LENGTH_LONG).show()
+    }
 }

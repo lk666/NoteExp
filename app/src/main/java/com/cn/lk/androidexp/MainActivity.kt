@@ -1,5 +1,6 @@
 package com.cn.lk.androidexp
 
+import android.os.Bundle
 import com.cn.lk.androidexp.annotation.SupportAnnotationActivity
 import com.cn.lk.androidexp.ipc.service.ServiceActivity
 import com.cn.lk.androidexp.kotlin.KotlinActivity
@@ -13,4 +14,9 @@ class MainActivity : SelectBaseActivity(listOf(
         ActivityItem("Annotataion", SupportAnnotationActivity::class.java),
         ActivityItem("Thread", ThreadActivity::class.java)
 
-))
+)) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        ViewUtil.toastLong("${Singleton.INSTANCE_BY_LAZY.str}, ${Singleton.INSTANCE_BY_LAZY.lazyStr}")
+    }
+}

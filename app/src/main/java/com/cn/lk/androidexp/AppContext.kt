@@ -1,5 +1,6 @@
 package com.cn.lk.androidexp
 
+import android.annotation.SuppressLint
 import android.app.Application
 import com.orhanobut.logger.*
 import com.squareup.leakcanary.LeakCanary
@@ -7,8 +8,15 @@ import com.squareup.leakcanary.LeakCanary
 
 class AppContext : Application() {
     companion object {
-        private var instance: Application? = null
-        fun instance() = instance!!
+        // 全局context，不会造成泄露
+        @SuppressLint("StaticFieldLeak")
+        private lateinit var instance: Application
+
+        fun instance() = instance
+    }
+
+    init {
+        instance = this
     }
 
     override fun onCreate() {
@@ -20,7 +28,6 @@ class AppContext : Application() {
         }
         LeakCanary.install(this)
         // Normal app init code...
-        instance = this
 
         Thread.setDefaultUncaughtExceptionHandler(CrashHandler())
 
