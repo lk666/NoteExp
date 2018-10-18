@@ -17,6 +17,9 @@ import org.jetbrains.annotations.NotNull
 import java.io.File
 
 
+/**
+ * 测试kotlin自带的注解
+ */
 class SupportAnnotationActivity : FragmentActivity(), View.OnClickListener {
 
     // Declare the constants
