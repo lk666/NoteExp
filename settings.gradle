@@ -1,1 +1,1 @@
-include ':app', ':lib_log', ':myannotationprocesser'
+include ':app', ':lib_log', ':lib_my_annotation', ':lib_my_compiler'

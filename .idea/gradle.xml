@@ -10,7 +10,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/lib_log" />
-            <option value="$PROJECT_DIR$/myannotationprocesser" />
+            <option value="$PROJECT_DIR$/lib_my_annotation" />
+            <option value="$PROJECT_DIR$/lib_my_compiler" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

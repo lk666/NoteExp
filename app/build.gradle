@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -35,6 +34,7 @@ android {
 }
 
 dependencies {
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
@@ -64,5 +64,15 @@ dependencies {
     implementation project(':lib_log')
 
     testImplementation 'junit:junit:4.12'
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    implementation project(':lib_my_annotation')
+    annotationProcessor project(':lib_my_compiler')
+
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+}
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
 }

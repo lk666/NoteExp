@@ -1,6 +1,7 @@
 package com.cn.lk.androidexp.annotation;
 
 import android.os.Build;
+import android.support.annotation.IdRes;
 import android.support.annotation.RequiresApi;
 
 import java.lang.reflect.Field;
@@ -20,7 +21,7 @@ public class TestJavaAnnotation {
 
     // 原本使用testInner会警告，加上次此句会去除警告
     @SuppressWarnings("deprecation")
-    public void testInner2() {
+    public void testInner2(@IdRes int id) {
         testInner();
     }
 
