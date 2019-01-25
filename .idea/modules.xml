@@ -5,9 +5,9 @@
       <module fileurl="file://$PROJECT_DIR$/AndroidExp.iml" filepath="$PROJECT_DIR$/AndroidExp.iml" />
       <module fileurl="file://$PROJECT_DIR$/NoteExp.iml" filepath="$PROJECT_DIR$/NoteExp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_annotation/lib_annotation.iml" filepath="$PROJECT_DIR$/lib_annotation/lib_annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_compiler/lib_compiler.iml" filepath="$PROJECT_DIR$/lib_compiler/lib_compiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/lib_log/lib_log.iml" filepath="$PROJECT_DIR$/lib_log/lib_log.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib_my_annotation/lib_my_annotation.iml" filepath="$PROJECT_DIR$/lib_my_annotation/lib_my_annotation.iml" />
-      <module fileurl="file://$PROJECT_DIR$/lib_my_compiler/lib_my_compiler.iml" filepath="$PROJECT_DIR$/lib_my_compiler/lib_my_compiler.iml" />
     </modules>
   </component>
 </project>
